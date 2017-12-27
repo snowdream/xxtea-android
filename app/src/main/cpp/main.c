@@ -13,12 +13,12 @@ const char *key = "1234567890";
 
 jstring CStr2Jstring( JNIEnv* env, const char* pat)
 {
-    jclass strClass = (*env)->FindClass(env,"Ljava/lang/String;");
+    jclass strClass = (*env)->FindClass(env,"java/lang/String");
     jmethodID ctorID = (*env)->GetMethodID(env,strClass, "<init>", "([BLjava/lang/String;)V");
     jbyteArray bytes = (*env)->NewByteArray(env,(jsize)strlen(pat));
     (*env)->SetByteArrayRegion(env,bytes, 0, (jsize)strlen(pat), (jbyte*)pat);
     jstring encoding = (*env)->NewStringUTF(env,"UTF-8");
-    return (jstring)(*env)->NewObject(strClass, ctorID, bytes, encoding);
+    return (jstring)(*env)->NewObject(env,strClass, ctorID, bytes, encoding);
 }
 
 char * Jstring2CStr( JNIEnv * env, jstring jstr )
@@ -27,7 +27,7 @@ char * Jstring2CStr( JNIEnv * env, jstring jstr )
     jclass clsstring = (*env)->FindClass(env,"java/lang/String");
     jstring strencode = (*env)->NewStringUTF(env,"UTF-8");
     jmethodID mid = (*env)->GetMethodID(env,clsstring, "getBytes", "(Ljava/lang/String;)[B");
-    jbyteArray barr= (jbyteArray)(*env)->CallObjectMethod(jstr,mid,strencode);
+    jbyteArray barr= (jbyteArray)(*env)->CallObjectMethod(env,jstr,mid,strencode);
     jsize alen = (*env)->GetArrayLength(env,barr);
     jbyte * ba = (*env)->GetByteArrayElements(env,barr,JNI_FALSE);
     if(alen > 0)

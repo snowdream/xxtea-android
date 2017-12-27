@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         String text = "Hello World! 你好，中国！";
         String ciphertext = XXTEA.encrypt(text);
-        String plaintext = XXTEA.encrypt(ciphertext);
+        String plaintext = XXTEA.decrypt(ciphertext);
 
         StringBuilder builder = new StringBuilder();
         builder.append("明文：").append(text).append("\n");
