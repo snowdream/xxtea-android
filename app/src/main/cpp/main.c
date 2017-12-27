@@ -10,24 +10,6 @@
  */
 const char *key = "1234567890";
 
-JNIEXPORT jstring JNICALL encrypt(JNIEnv *env, jobject thiz, jstring plaintext){
-    const char *text = Jstring2CStr(env,plaintext);
-    size_t len;
-    unsigned char *encrypt_data = xxtea_encrypt(text, strlen(text), key, &len);
-    char *base64_data = base64_encode(encrypt_data, len);
-    return CStr2Jstring(env,base64_data);
-};
-
-
-JNIEXPORT jstring JNICALL decrypt(JNIEnv *env, jobject thiz, jstring ciphertext){
-    const char *text = Jstring2CStr(env,ciphertext);
-    size_t len;
-    unsigned char *base64_data = base64_decode(text, &len);
-
-    char *decrypt_data = xxtea_decrypt(base64_data, len, key, &len);
-
-    return CStr2Jstring(env,decrypt_data);
-};
 
 jstring CStr2Jstring( JNIEnv* env, const char* pat)
 {
@@ -58,3 +40,23 @@ char * Jstring2CStr( JNIEnv * env, jstring jstr )
 
     return rtn;
 }
+
+
+JNIEXPORT jstring JNICALL encrypt(JNIEnv *env, jobject thiz, jstring plaintext){
+    const char *text = Jstring2CStr(env,plaintext);
+    size_t len;
+    unsigned char *encrypt_data = xxtea_encrypt(text, strlen(text), key, &len);
+    char *base64_data = base64_encode(encrypt_data, len);
+    return CStr2Jstring(env,base64_data);
+};
+
+
+JNIEXPORT jstring JNICALL decrypt(JNIEnv *env, jobject thiz, jstring ciphertext){
+    const char *text = Jstring2CStr(env,ciphertext);
+    size_t len;
+    unsigned char *base64_data = base64_decode(text, &len);
+
+    char *decrypt_data = xxtea_decrypt(base64_data, len, key, &len);
+
+    return CStr2Jstring(env,decrypt_data);
+};
