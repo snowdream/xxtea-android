@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -28,9 +28,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    // Example of a call to a native method
-    TextView tv = (TextView) findViewById(R.id.sample_text);
-    tv.setText(stringFromJNI());
+        String text = "Hello World! 你好，中国！";
+        String ciphertext = XXTEA.encrypt(text);
+        String plaintext = XXTEA.encrypt(ciphertext);
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("明文：").append(text).append("\n");
+        builder.append("密文：").append(ciphertext).append("\n");
+        builder.append("解密密文之后的明文：").append(plaintext).append("\n");
+
+        // Example of a call to a native method
+        TextView tv = (TextView) findViewById(R.id.sample_text);
+        tv.setText(builder.toString());
     }
 
     @Override
@@ -55,14 +64,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
-
-    // Used to load the 'native-lib' library on application startup.
+    // Used to load the 'xxtea' library on application startup.
     static {
-        System.loadLibrary("native-lib");
+        System.loadLibrary("xxtea");
     }
 }
